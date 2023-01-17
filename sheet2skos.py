@@ -11,12 +11,12 @@ import tempfile
 from queries import MAPPING
 
 
-def google_config(creds_file, sheet_name):
+def google_config(creds_file, wb_name):
     gc = gspread.oauth(
         credentials_filename=creds_file,
     )
-    sh = gc.open(sheet_name)
-    worksheet_list = sh.worksheets()
+    wb = gc.open(wb_name)
+    worksheet_list = wb.worksheets()
     worksheet_names = []
     for worksheet in worksheet_list:
         worksheet_names.append(worksheet.title)
@@ -26,7 +26,7 @@ def google_config(creds_file, sheet_name):
         if worksheet_name
         not in ["uitleg_template_termen", "template_mapping", "blanco_template"]
     ]
-    return sh, worksheet_names
+    return wb, worksheet_names
 
 
 def update_mapping(uri_json, thes_name):
@@ -87,11 +87,13 @@ def csv_func(args):
         sa_jar=args.saJAR, sa_mapping=sa_mapping, filename=args.input_file
     )
     output_fname = write_output(args=args, output=output, output_fname=args.thes_names)
-    print(f"Finished transforming '{args.thes_names}'; output was written to '{output_fname}'")
+    print(
+        f"Finished transforming '{args.thes_names}'; output was written to '{output_fname}'"
+    )
 
 
 def sheet_func(args):
-    sheet, thes_list = google_config(creds_file=args.creds, sheet_name=args.sheet_name)
+    sheet, thes_list = google_config(creds_file=args.creds, wb_name=args.wb_name)
     thes_names = args.thes_names.split(";")
     for i in range(len(thes_names)):
         if " " in thes_names[i]:
@@ -99,7 +101,9 @@ def sheet_func(args):
     for thes in thes_names:
         print(f"Now transforming '{thes}'-sheet to SKOS in ttl-format")
         if thes not in thes_list:
-            print(f"'{thes}' was not found in the sheet '{args.sheet_name}'.")
+            print(
+                f"Sheet '{thes}' was not found in the workbook '{args.wb_name}'. Check for a spelling mistake and rerun the script to generate this thesaurus."
+            )
             continue
         dataframe = pd.DataFrame(sheet.worksheet(thes).get_all_records())
         tmpfile = write_temp(df=dataframe)
@@ -127,7 +131,6 @@ def main(args):
                 if chunk:
                     f.write(chunk)
                     f.flush()
-            # f.write(r.content)
         args.saJAR = "./sparql-anything-0.8.1.jar"
         print("Finished downloading Sparql Anything.")
 
@@ -143,7 +146,7 @@ if __name__ == "__main__":
         "--saJAR",
         metavar="Sparql Anything JAR file",
         required=False,
-        help="Location of the Sparql Anything JAR file; if not specified, this script will download the latest version to './' ",
+        help="Location of the Sparql Anything JAR file; if not specified, the script will download the latest version to './'.",
     )
     parser.add_argument(
         "--out",
@@ -151,7 +154,7 @@ if __name__ == "__main__":
         type=str,
         default="./skos_thesauri",
         required=False,
-        help="Output directory for files, default is './skos_thesauri'",
+        help="Output directory for Turtle files, default is './skos_thesauri'.",
     )
     parser.add_argument(
         "--mode",
@@ -159,35 +162,35 @@ if __name__ == "__main__":
         type=str,
         default="google_sheet",
         choices=["google_sheet", "csv"],
-        help="Specify input format; options include 'csv' or 'google_sheet'; default is 'google_sheet' which requires credentials via the --creds flag",
+        help="Input mode; options include 'csv' or 'google_sheet'; default is 'google_sheet' which requires credentials via the '--creds' argument.",
     )
     parser.add_argument(
         "--creds",
         metavar="Google Sheets client secret",
         type=str,
         required=False,
-        help="Specify the location of the client secret needed for authentication with mode 'google_sheet'.",
+        help="The location of the client secret needed for authentication with mode 'google_sheet'.",
     )
     parser.add_argument(
-        "--sheet_name",
-        metavar="Google Sheets SKOS template sheet name",
+        "--wb_name",
+        metavar="Google Sheets SKOS template workbook name",
         type=str,
         required=False,
-        help="Specify the name of the Google sheet that contains the SKOS template.",
+        help="The name of the Google workbook that contains the SKOS template(s).",
     )
     parser.add_argument(
         "--thes_names",
         metavar="SKOS thesauri names",
         type=str,
-        required=False,
-        help="Specify the name of the thesaurus to be transformed. This name is also used to retrieve the relevant ontology URI from the dictionary. In the case of mode 'google_sheet', this can be multiple thesauri names corresponding to tabs from the sheet. In that case the multiple names must be separated by a semicolon without the use of whitespace and surrounded by quotes.",
+        required=True,
+        help="The name of the thesaurus to be transformed. This name is also used to retrieve the relevant ontology URI from the JSON file. In the case of mode 'google_sheet', this can be multiple thesauri names corresponding to tabs from the sheet. In that case the multiple names must be separated by a semicolon without the use of whitespace and surrounded by quotes.",
     )
     parser.add_argument(
         "--input_file",
         metavar="CSV input file",
         type=str,
         required=False,
-        help="Specify the location of the input in the case of a CSV-file.",
+        help="The location of the input in the case of a CSV file.",
     )
     parser.add_argument(
         "--uri_json",
@@ -195,7 +198,7 @@ if __name__ == "__main__":
         type=str,
         default="./uri_dict.json",
         required=True,
-        help="Specify a JSON that contains the ontology URI for different thesauri names",
+        help="The location of a JSON that contains the ontology URI for different thesauri names.",
     )
 
     args_dict = vars(parser.parse_args())
@@ -212,7 +215,7 @@ if __name__ == "__main__":
             "Mode 'google_sheet' was used but no tabs were specified. Script will exit."
         )
     if args_dict["mode"] == "google_sheet" and (
-        not (args_dict["sheet_name"]) or args_dict["sheet_name"] == None
+        not (args_dict["wb_name"]) or args_dict["wb_name"] == None
     ):
         exit(
             "Mode 'google_sheet' was used but no sheet name was specified. Script will exit."
