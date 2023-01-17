@@ -4,7 +4,7 @@ The code in this repository generates a minimal [SKOS](https://www.w3.org/TR/200
 It is mainly based on [SPARQL Anything](https://github.com/SPARQL-Anything/sparql.anything).
 
 The Google workbook that contains meemoo's SKOS templates is available [here](https://docs.google.com/spreadsheets/d/12I_Qmh3-uIlc4nOd142HI8lvjRfVjNoYwGmvxGIxHcM).
-Note, however, that is only accessible to meemoo employees.
+Note, however, that it is only accessible to meemoo employees.
 More information about the template as such is available in the next section.
 
 The script uses the [gspread](https://github.com/burnash/gspread) Python package to connect to Google Sheets.
