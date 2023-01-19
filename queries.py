@@ -1,4 +1,5 @@
 MAPPING = """
+PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>
 PREFIX fx: <http://sparql.xyz/facade-x/ns/>
 PREFIX premis: <http://www.loc.gov/premis/rdf/v3/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -81,18 +82,46 @@ WHERE {
         BIND (STRLANG(?definition_en_temp, "en") AS ?definition_en)
         BIND (STRLANG(?definition_nl_temp, "nl") AS ?definition_nl)
         BIND (STRLANG(?definition_fr_temp, "fr") AS ?definition_fr)
-        BIND (STRLANG(?altlabel_en_temp, "en") AS ?altlabel_en)
-        BIND (STRLANG(?altlabel_nl_temp, "nl") AS ?altlabel_nl)
-        BIND (STRLANG(?altlabel_fr_temp, "fr") AS ?altlabel_fr)
-        BIND (IRI(CONCAT(str(?ont_iri), "/", ?broader_temp)) AS ?broader)
-        BIND (IRI(CONCAT(str(?ont_iri), "/", ?narrower_temp)) AS ?narrower)
-        BIND (IRI(CONCAT(str(?ont_iri), "/", ?related_temp)) AS ?related)
-        BIND (STRLANG(?example_en_temp, "en") AS ?example_en)
-        BIND (STRLANG(?example_nl_temp, "nl") AS ?example_nl)
-        BIND (STRLANG(?example_fr_temp, "fr") AS ?example_fr)
-
+        
         BIND (IF(!bound(?broader), ?concept, 1/0) AS ?topconcept)
         BIND (IF(!bound(?broader), ?ont_iri, 1/0) AS ?topconcept_of)
     }
+    OPTIONAL{
+        ?member_altlabel_en_temp apf:strSplit    (?altlabel_en_temp ";") .
+    }
+    OPTIONAL{
+        ?member_altlabel_nl_temp apf:strSplit    (?altlabel_nl_temp ";") .
+    }
+    OPTIONAL{
+        ?member_altlabel_fr_temp apf:strSplit    (?altlabel_fr_temp ";") .
+    }
+    OPTIONAL{
+        ?member_broader_temp apf:strSplit    (?broader_temp ";") .
+    }
+    OPTIONAL{
+        ?member_narrower_temp apf:strSplit    (?narrower_temp ";") .
+    }
+    OPTIONAL{
+        ?member_related_temp apf:strSplit    (?related_temp ";") .
+    }
+    OPTIONAL{
+        ?member_example_en_temp apf:strSplit    (?example_en_temp ";") .
+    }
+    OPTIONAL{
+        ?member_example_nl_temp apf:strSplit    (?example_nl_temp ";") .
+    }
+    OPTIONAL{
+        ?member_example_fr_temp apf:strSplit    (?example_fr_temp ";") .
+    }
+    
+    BIND (STRLANG(?member_altlabel_en_temp, "en") AS ?altlabel_en)
+    BIND (STRLANG(?member_altlabel_nl_temp, "nl") AS ?altlabel_nl)
+    BIND (STRLANG(?member_altlabel_fr_temp, "fr") AS ?altlabel_fr)
+    BIND (IRI(CONCAT(str(?ont_iri), "/", ?member_broader_temp)) AS ?broader)
+    BIND (IRI(CONCAT(str(?ont_iri), "/", ?member_narrower_temp)) AS ?narrower)
+    BIND (IRI(CONCAT(str(?ont_iri), "/", ?member_related_temp)) AS ?related)
+    BIND (STRLANG(?member_example_en_temp, "en") AS ?example_en)
+    BIND (STRLANG(?member_example_nl_temp, "nl") AS ?example_nl)
+    BIND (STRLANG(?member_example_fr_temp, "fr") AS ?example_fr)
 }
 """
