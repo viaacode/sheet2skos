@@ -1,0 +1,129 @@
+@prefix apf:    <http://jena.hpl.hp.com/ARQ/property#> .
+@prefix fx:     <http://sparql.xyz/facade-x/ns/> .
+@prefix premis: <http://www.loc.gov/premis/rdf/v3/> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix xyz:    <http://sparql.xyz/facade-x/data/> .
+
+<https://data.hetarchief.be/id/default/transcoding>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:definition    "La conversion (généralement transcoder + réemballer) d'un fichier de la chaîne de numérisation/migration vers un format de fichier différent ou vers le même format de fichier avec, par exemple, un débit binaire différent. Le transcodage se produit principalement lors de la création d'une copie mezzanine/navigation/affichage, mais peut également se produire à des fins de préservation."@fr , "Converting (usually transcode + rewrap) a file from the digitization/migration chain to a different file format or to the same file format with, for example, a different bit rate. Transcoding mainly occurs during the creation of a mezzanine/browse/preview copy, but can also occur for preservation purposes."@en , "Het omzetten (meestal transcode + rewrap) van een bestand uit de digitaliserings-/migratieketen naar een ander bestandsformaat of naar hetzelfde bestansformaat met bv. een andere bitrate. Transcodering komt vooral voor bij de creatie van een mezzanine/browse-/inkijkkopie, maar kan ook voorkomen omwille van preserveringsdoeleinden."@nl ;
+        skos:prefLabel     "transcodage"@fr , "transcoding"@en , "transcoderen"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/digital_transfer>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "transfert numérique"@fr ;
+        skos:broader       <https://data.hetarchief.be/id/default/migration> ;
+        skos:definition    "La conversion d'informations numériques sur un support en informations numériques sur un autre support pouvant contenir un signal numérique."@fr , "Het omzetten van digitale informatie op een drager naar digitale informatie op een andere drager die een digitaal signaal kan bevatten."@nl , "The conversion of digital information on one carrier into digital information on another carrier that can contain a digital signal."@en ;
+        skos:example       "de omzetting van DV"@nl , "omzetting van optische schijf naar LTO-tape"@nl , "de omzetting van digitale betacam"@nl ;
+        skos:prefLabel     "transfert digital"@fr , "digitale transfer"@nl , "digital transfer"@en ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/validation>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:definition    "La vérification puis la (dés)approbation (par le fournisseur de services) qu'un fichier répond aux conditions techniques fixées par l'appel d'offres. La validation est un 'contrôle objectif': quelque chose satisfait ou non aux exigences formelles/conditions techniques."@fr , "Checking and subsequent approval or rejection (by the service provider) that a file meets the technical conditions set by the tender. Validation is an 'objective check': something meets or does not meet the formal requirements/technical conditions."@en , "Het controleren en vervolgens goed- of afkeuren (door de service provider) dat een bestand voldoet aan de door de aanbesteding gezette technische voorwaarden. Validatie is een 'objectieve controle': iets voldoet of voldoet niet aan de vormeisen/technische voorwaarden."@nl ;
+        skos:example       "voldoet een ALTO aan de specificatie"@nl , "het gebruik van mediarapporten bij kranten"@nl , "het gebruik van DVAnalyzer bij DV"@nl ;
+        skos:prefLabel     "validation"@fr , "validation"@en , "validatie"@nl ;
+        skos:related       <https://data.hetarchief.be/id/default/quality_control> ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/format_identification>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "formaat identificatie"@nl , "identificatie"@nl , "format identification"@en , "identification du format"@fr ;
+        skos:definition    "Establishing that the carrier is actually of the format type it claims to be, based on its characteristics/specifications."@en , "Déterminer que le porteur est bien celui qu'il prétend être, sur la base des caractéristiques/spécifications."@fr , "Het vaststellen dat de drager ook werkelijk degene is die hij claimt te zijn, op basis van de karakteristieken/specificaties."@nl ;
+        skos:prefLabel     "identification"@fr , "identification"@en , "identificeren"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/migration>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:definition    "Het omzetten van een signaal naar een ander signaal. "@nl , "La conversion d'un signal en un autre."@fr , "The conversion of one signal to another. "@en ;
+        skos:narrower      <https://data.hetarchief.be/id/default/digitization> , <https://data.hetarchief.be/id/default/digital_transfer> ;
+        skos:prefLabel     "migration"@fr , "migration"@en , "migratie"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/digitization>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "numérisation"@fr , "digitalisering"@nl ;
+        skos:broader       <https://data.hetarchief.be/id/default/migration> ;
+        skos:definition    "The conversion of analog to digital information, whereby the signal is changed (i.e., from analog to digital). "@en , "Het omzetten van analoge naar digitale informatie, waarbij het signaal wordt gewijzigd (i.e. van analoog naar digitaal). "@nl , "La conversion d'informations analogiques en informations numériques, pendant laquelle une modification du signal a lieu (c'est-à-dire passage de l'analogique au numérique). "@fr ;
+        skos:prefLabel     "digitization"@en , "digitaliseren"@nl , "digitalisation"@fr ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/inspection>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "keuring"@nl ;
+        skos:definition    "Een visuele en materiële inspectie (bv. bekijken, ruiken, eens openen en sluiten) van een bepaalde drager met het oog op het vaststellen van fenomenen die de digitalisering (of logistiek) beïnvloeden."@nl , "A visual and material inspection (e.g. viewing, smelling, opening and closing) of a given carrier with the purpose of identifying phenomena that affect digitization (or logistics)."@en , "Une inspection visuelle et physique (par exemple, regarder, sentir, ouvrir et fermer) d'un support particulier en vue d'identifier les phénomènes qui influencent la numérisation (ou la logistique)."@fr ;
+        skos:prefLabel     "keuren"@nl , "inspection"@fr , "inspection"@en ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default>
+        rdf:type            skos:ConceptScheme ;
+        skos:hasTopConcept  <https://data.hetarchief.be/id/default/baking> , <https://data.hetarchief.be/id/default/digital_transfer> , <https://data.hetarchief.be/id/default/inspection> , <https://data.hetarchief.be/id/default/editing> , <https://data.hetarchief.be/id/default/repair> , <https://data.hetarchief.be/id/default/migration> , <https://data.hetarchief.be/id/default/format_identification> , <https://data.hetarchief.be/id/default/check_in> , <https://data.hetarchief.be/id/default/check_out> , <https://data.hetarchief.be/id/default/cleaning> , <https://data.hetarchief.be/id/default/quality_control> , <https://data.hetarchief.be/id/default/digitization> , <https://data.hetarchief.be/id/default/validation> , <https://data.hetarchief.be/id/default/transcoding> ;
+        skos:prefLabel      "Meemoo event types thesaurus" .
+
+<https://data.hetarchief.be/id/default/editing>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "bewerking"@nl ;
+        skos:definition    "Het bewerken van de bestanden voortkomend uit de digitalisering/migratie om zo het resultaat te verbeteren. Dit event leidt in principe tot een afgeleid bestand (mezzanine, browse- of inkijkkopie), maar soms zijn editeeracties ook toegestaan op archiefmasters."@nl , "Editing the files resulting from the digitization/migration process in order to improve the result. In principle, this event leads to a derived file (mezzanine, browse or preview copy), but sometimes editing actions are also allowed on archive masters."@en , "Le montage des fichiers issus de la numérisation/migration afin d'améliorer le résultat. En principe, cet événement donne lieu à un fichier dérivé (mezzanine ou copie de navigation/affichage), mais parfois les actions de montage sont également autorisées sur les archives maîtres."@fr ;
+        skos:example       "het bijstellen van kleur bij film (colour grading, colorisation)"@nl , "een negatief positief maken bij glasplaten en film"@nl , "het beeld en geluid synchroniseren"@nl , "de kop (begin) en staart (einde) afknippen van een bestand om bv. ruis weg te halen"@nl ;
+        skos:prefLabel     "bewerken"@nl , "édition"@fr , "editing"@en ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/quality_control>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:definition    "La vérification puis la (dés)approbation (par meemoo) qu'un fichier répond aux exigences de contenu. La validation est une 'vérification subjective': il n'y a pas d'ensemble de références fixes, il existe donc une certaine 'plage' dans laquelle quelque chose doit se situer pour être approuvé."@fr , "Het controleren en vervolgens goed- of afkeuren (door meemoo) dat een bestand voldoet aan de inhoudelijke eisen. Validatie is een 'subjectieve controle': er is geen vastgestelde referentieset, er is dus een bepaald 'bereik' waarbinnen iets moet vallen om goedgekeurd te worden."@nl , "Checking and subsequent approval or rejection (by meemoo) that a file meets the content requirements. Validation is a 'subjective check': there is no fixed reference set, so there is a certain 'range' within which something must fall in order to be approved."@en ;
+        skos:example       "het luisteren en/of bekijken van audio/filmpjes/... om te beoordelen of het resultaat van de digitalisering/migratie aanvaardbaar is"@nl ;
+        skos:prefLabel     "kwaliteitscontrole"@nl , "contrôle de la qualité"@fr , "quality control"@en ;
+        skos:related       <https://data.hetarchief.be/id/default/validation> ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/cleaning>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "opschoning"@nl ;
+        skos:definition    "The removal of (non-material-specific) substances that do not affect or alter the original material (i.e. the object that is to be digitized)."@en , "L'enlèvement de substances (non-spécifique au matériau) qui n'affectent ni ne modifient le matériau d'origine (c'est-à-dire l'objet à numériser). Cela n'implique aucune modification de l'objet à numériser."@fr , "Het verwijderen van (niet-materiaaleigen) substanties die het originele materiaal (i.e. het te digitaliseren object) niet beïnvloeden of wijzigen. Dit houdt geen wijzigingen in aan het te digitaliseren object."@nl ;
+        skos:prefLabel     "cleaning"@en , "nettoyage"@fr , "opschonen"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/check_in>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:definition    "L'enregistrement qu'un support ou un lot est arrivé chez une partie (par exemple, un partenaire de contenu, un fournisseur de services) et est prêt pour la prochaine étape du processus de numérisation."@fr , "Registering that a carrier or batch has arrived at a party (e.g. content partner, service provider) and is ready for the next step in the digitization process."@en , "Het registreren dat een drager of batch is aangekomen bij een partij (bv. contentpartner, service provider) en klaar is voor de volgende stap in het digitaliseringsproces."@nl ;
+        skos:prefLabel     "enregistrement"@fr , "check-in"@en , "check-in"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/baking>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:broader       <https://data.hetarchief.be/id/default/repair> ;
+        skos:definition    "Het voor een bepaalde tijd verhitten van een audiovisuele drager met gemagnetiseerde tape om de kleverigheid veroorzaakt door bv. het soft binder syndrome of sticky shed syndrome (hydrolyse) te remediëren en de drager in een beter digitaliseerbare toestand te brengen."@nl , "Heating an audiovisual carrier with magnetized tape for a certain period of time to remedy the stickiness caused by e.g. the soft binder syndrome or sticky shed syndrome (hydrolysis) and to bring the carrier into a better digitizable state."@en , "Chauffer un support audiovisuel avec une bande magnétisée pendant une certaine période de temps pour remédier à l'adhésivité causée par exemple par 'soft binder syndrome' ou le syndrome du collant ('sticky shed syndrome') (hydrolyse) et pour amener le support dans un meilleur état de numérisation."@fr ;
+        skos:prefLabel     "baking"@en , "bakken"@nl , "cuisson"@fr ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/check_out>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:definition    "L'enregistrement qu'un support ou un lot a quitté une partie et est en route vers la partie suivante dans le processus de numérisation (par exemple, du partenaire de contenu au fournisseur de services)."@fr , "Registering that a carrier or batch has left one party and is on its way to the next party in the digitization process (e.g. from content partner to service provider)."@en , "Het registreren dat een drager of batch is vertrokken bij een partij en op weg is naar de volgende partij in het digitaliseringsproces (bv. van contentpartner naar service provider)."@nl ;
+        skos:prefLabel     "départ"@fr , "check-out"@en , "check-out"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
+
+<https://data.hetarchief.be/id/default/repair>
+        rdf:type           skos:Concept ;
+        rdfs:subClassOf    premis:Event ;
+        skos:altLabel      "herstelling"@nl ;
+        skos:definition    "Het herstellen van de informatiedrager zodat hij in een beter digitaliseerbare/migreerbare toestand komt. Dit houdt mogelijke wijzigingen in aan het te digitaliseren object."@nl , "Restoring the information carrier so that it is in a better digitizable/migrateable state. This includes possible changes to the object that is to be digitized."@en , "La restauration du support d'informations afin qu'il soit dans un meilleur état numérisable/migrable. Cela inclut des éventuelles modifications de l'objet à numériser."@fr ;
+        skos:example       "kleppen van cassettes herstellen"@nl , "tandwieltjes herstellen"@nl , "een tape in een nieuwe huls steken"@nl , "het aan elkaar zetten van materiaal"@nl ;
+        skos:narrower      <https://data.hetarchief.be/id/default/baking> ;
+        skos:prefLabel     "repair"@en , "réparation"@fr , "herstellen"@nl ;
+        skos:topConceptOf  <https://data.hetarchief.be/id/default> .
