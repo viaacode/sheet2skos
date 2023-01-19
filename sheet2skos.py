@@ -204,7 +204,9 @@ if __name__ == "__main__":
 
     args_dict = vars(parser.parse_args())
     if args_dict["mode"] == "google_sheet" and (
-        not (args_dict["creds"]) or args_dict["creds"] == None
+        not (args_dict["creds"])
+        or args_dict["creds"] == None
+        or not os.path.isfile(args_dict["creds"])
     ):
         exit(
             "Mode 'google_sheet' was used but no credentials were given. Script will exit."
@@ -222,7 +224,9 @@ if __name__ == "__main__":
             "Mode 'google_sheet' was used but no sheet name was specified. Script will exit."
         )
     if args_dict["mode"] == "csv" and (
-        not (args_dict["input_file"]) or args_dict["input_file"] == None
+        not (args_dict["input_file"])
+        or args_dict["input_file"] == None
+        or not os.path.isfile(args_dict["input_file"])
     ):
         exit("Mode 'csv' was used but no input file was given. Script will exit.")
 
