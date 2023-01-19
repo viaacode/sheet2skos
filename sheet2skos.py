@@ -82,6 +82,7 @@ def write_output(args, output, output_fname):
 
 
 def csv_func(args):
+    print(f"Now transforming '{args.thes_names}'-sheet to SKOS in ttl-format")
     sa_mapping = update_mapping(uri_json=args.uri_json, thes_name=args.thes_names)
     output = transform(
         sa_jar=args.saJAR, sa_mapping=sa_mapping, filename=args.input_file
