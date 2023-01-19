@@ -20,8 +20,9 @@ The query assumes that terms that do not have a `skos:broader` property, are als
 Finally, the query assumes a number of terms are required to be filled in (cf. section below).
 - `uri_dict.json`: this file contains a number of key-value pairs, in which the keys represent the name of the thesaurus and the values represent the different thesauri URIs to use as a base for the different terms.
 If nothing matches, a default URI (`<https://data.hetarchief.be/id/default>`) is used as a base.
-- `test.csv`: a CSV file that uses the SKOS template to construct a thesaurus about events.
+- `test/test.csv`: a CSV file that uses the SKOS template to construct a thesaurus about events.
 It is meant for test usage of the CSV functionality.
+- `test/test_transformatie_thesaurus.ttl`: a Turtle file that contains the output of the transformation of the `test.csv` file. It is meant for test usage as a sort of 'reference output' after transforming the `test.csv` file. 
 - `blanco_template.csv`: an empty version of the SKOS template that is described in the next section.
 
 # SKOS template
@@ -72,7 +73,7 @@ Example commando for usage with the `test.csv` file provided in this repository.
 Since `test_transformatie` is not an actual key in the `uri_dict.json`, the default base URI will be used.
 
 ```bash
-python ./sheet2skos.py --saJAR ../../Documents/sparql_anything/sparql-anything-0.8.1.jar --thes_names "test_transformatie" --uri_json ./uri_dict.json --mode "csv" --input_file ./test.csv
+python ./sheet2skos.py --saJAR ../../Documents/sparql_anything/sparql-anything-0.8.1.jar --thes_names "test_transformatie" --uri_json ./uri_dict.json --mode "csv" --input_file ./test/test.csv
 ```
 
 ## Example usage of the Google Sheets functionality
