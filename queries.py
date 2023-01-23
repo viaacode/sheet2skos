@@ -28,7 +28,7 @@ CONSTRUCT {
              skos:example ?example_en ;
              skos:example ?example_nl ;
              skos:example ?example_fr ;
-             skos:inScheme ?haevttypeiri ;
+             skos:inScheme ?ont_iri ;
              skos:topConceptOf ?topconcept_of .
 }
 WHERE {
