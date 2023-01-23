@@ -53,6 +53,7 @@ heeft_gerelateerd_concept|This column indicates whether the current concept has 
 voorbeeld_en|This column can contain one or more examples of the term in English.|`skos:example@en`|0..*|
 voorbeeld_fr|This column can contain one or more examples of the term in French.|`skos:example@fr`|0..*|
 voorbeeld_nl|This column can contain one or more examples of the term in Dutch.|`skos:example@nl`|0..*|
+voorbeeld|This column can contain one or more examples of the term, without the use of langStrings. This can be useful if the example is a term that has no real translations across languages (e.g. the name of an organisation).|`skos:example`|0..*|
 
 # Usage
 
