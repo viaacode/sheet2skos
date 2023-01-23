@@ -28,6 +28,7 @@ CONSTRUCT {
              skos:example ?example_en ;
              skos:example ?example_nl ;
              skos:example ?example_fr ;
+             skos:example ?example ;
              skos:inScheme ?ont_iri ;
              skos:topConceptOf ?topconcept_of .
 }
@@ -72,7 +73,10 @@ WHERE {
         OPTIONAL {
             ?c xyz:voorbeeld_fr ?example_fr_temp .
         }
-        
+        OPTIONAL {
+            ?c xyz:voorbeeld ?example_temp .
+        }
+
         BIND (IRI({ont_iri_placeholder}) AS ?ont_iri)
         BIND (IRI(CONCAT(str(?ont_iri), "/", ?concept_temp)) AS ?concept)
         
@@ -112,6 +116,9 @@ WHERE {
     }
     OPTIONAL{
         ?member_example_fr_temp apf:strSplit    (?example_fr_temp ";") .
+    }
+    OPTIONAL{
+        ?example apf:strSplit    (?example_temp ";") .
     }
     
     BIND (STRLANG(?member_altlabel_en_temp, "en") AS ?altlabel_en)
