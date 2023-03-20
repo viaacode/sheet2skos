@@ -9,7 +9,7 @@ PREFIX xyz: <http://sparql.xyz/facade-x/data/>
 
 CONSTRUCT {
     ?ont_iri a skos:ConceptScheme ;
-                  skos:prefLabel "Meemoo event types thesaurus" ;
+                  skos:prefLabel {pref_label_placeholder} ;
                   skos:hasTopConcept ?topconcept .
     ?concept a skos:Concept ;
              rdfs:subClassOf premis:Event ;

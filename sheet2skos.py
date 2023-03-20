@@ -29,12 +29,15 @@ def google_config(creds_file, wb_name):
     return wb, worksheet_names
 
 
-def update_mapping(uri_json, thes_name):
+def update_mapping(uri_json, thes_name, pref_label):
     with open(uri_json, "r") as json_uri_file:
         uri_dict = json.load(json_uri_file)
         if thes_name in uri_dict:
             sa_mapping = MAPPING.replace(
                 "{ont_iri_placeholder}", f'"{uri_dict[thes_name]}"'
+            )
+            sa_mapping = sa_mapping.replace(
+                "{pref_label_placeholder}", f'"{pref_label}"'
             )
         else:
             print(
@@ -42,6 +45,9 @@ def update_mapping(uri_json, thes_name):
             )
             sa_mapping = MAPPING.replace(
                 "{ont_iri_placeholder}", '"https://data.hetarchief.be/id/default"'
+            )
+            sa_mapping = sa_mapping.replace(
+                "{pref_label_placeholder}", f'"{pref_label}"'
             )
         return sa_mapping
 
@@ -83,7 +89,9 @@ def write_output(args, output, output_fname):
 
 def csv_func(args):
     print(f"Now transforming '{args.thes_names}'-sheet to SKOS in ttl-format")
-    sa_mapping = update_mapping(uri_json=args.uri_json, thes_name=args.thes_names)
+    sa_mapping = update_mapping(
+        uri_json=args.uri_json, thes_name=args.thes_names, pref_label=args.pref_label
+    )
     output = transform(
         sa_jar=args.saJAR, sa_mapping=sa_mapping, filename=args.input_file
     )
@@ -106,9 +114,16 @@ def sheet_func(args):
                 f"Sheet '{thes}' was not found in the workbook '{args.wb_name}'. Check for a spelling mistake and rerun the script to generate this thesaurus."
             )
             continue
+        sheet_pref_label = str(
+            input(
+                f"Please enter a `skos:prefLabel` for the {thes}-sheet concept scheme: "
+            )
+        )
         dataframe = pd.DataFrame(sheet.worksheet(thes).get_all_records())
         tmpfile = write_temp(df=dataframe)
-        sa_mapping = update_mapping(uri_json=args.uri_json, thes_name=thes)
+        sa_mapping = update_mapping(
+            uri_json=args.uri_json, thes_name=thes, pref_label=sheet_pref_label
+        )
         output = transform(
             sa_jar=args.saJAR, sa_mapping=sa_mapping, filename=tmpfile.name
         )
@@ -187,6 +202,13 @@ if __name__ == "__main__":
         help="The name of the thesaurus to be transformed. This name is also used to retrieve the relevant ontology URI from the JSON file. In the case of mode 'google_sheet', this can be multiple thesauri names corresponding to tabs from the sheet. In that case the multiple names must be separated by a semicolon without the use of whitespace and surrounded by quotes.",
     )
     parser.add_argument(
+        "--pref_label",
+        metavar="Concept scheme skos:prefLabel",
+        type=str,
+        required=False,
+        help="The `skos:prefLabel` for the concept scheme that is being transformed. This parameter is only required in the case of a CSV file.",
+    )
+    parser.add_argument(
         "--input_file",
         metavar="CSV input file",
         type=str,
@@ -229,6 +251,8 @@ if __name__ == "__main__":
         or not os.path.isfile(args_dict["input_file"])
     ):
         exit("Mode 'csv' was used but no input file was given. Script will exit.")
+    if args_dict["mode"] == "csv" and (not (args_dict["pref_label"])):
+        exit("Mode 'csv' was used but no skos:prefLabel was given. Script will exit.")
 
     argsv = parser.parse_args()
     main(argsv)
