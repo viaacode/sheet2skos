@@ -64,7 +64,9 @@ usage: sheet2skos.py [-h]
                      [--mode input mode]
                      [--creds Google Sheets client secret]
                      [--sheet_name Google Sheets SKOS template sheet name] 
-                     [--thes_names SKOS thesauri names] [--input_file CSV input file]
+                     [--thes_names SKOS thesauri names]
+                     [--input_file CSV input file]
+                     [--pref_label Concept scheme skos:prefLabel]
                      --uri_json JSON with thesauri URIs
 ```
 
@@ -74,7 +76,7 @@ Example commando for usage with the `test.csv` file provided in this repository.
 Since `test_transformatie` is not an actual key in the `uri_dict.json`, the default base URI will be used.
 
 ```bash
-python ./sheet2skos.py --saJAR ../../Documents/sparql_anything/sparql-anything-0.8.1.jar --thes_names "test_transformatie" --uri_json ./uri_dict.json --mode "csv" --input_file ./test/test.csv
+python ./sheet2skos.py --saJAR ../../sparql_anything/sparql-anything-0.8.1.jar --thes_names "test_transformatie" --uri_json ./uri_dict.json --mode "csv" --pref_label "test pref label"  --input_file ./test/test.csv
 ```
 
 ## Example usage of the Google Sheets functionality
@@ -83,9 +85,10 @@ Example commando for usage with Google Sheets.
 In this case, the name of the workbook is "skos_thesauri_meemoo" and three tabs/sheets are given to be transformed to SKOS in Turtle format: `events`, `test_transformatie` and `events2`.
 Since `events2` is not an actual existing sheet, the script will skip it and only transform the other 2 sheets.
 Since `test_transformatie` is not an actual key in the `uri_dict.json`, the default base URI will be used.
+Note that the script will ask for each sheet of the workbook which `skos:prefLabel` should be used for the concept scheme that is created.
 
 ```bash
-python ./sheet2skos.py --saJAR ../../Documents/sparql_anything/sparql-anything-0.8.1.jar --creds ./client_secret_sheet2skos.json --sheet_name "skos_thesauri_meemoo" --thes_names "events;test_transformatie;events2" --uri_json ./uri_dict.json
+python ./sheet2skos.py --saJAR ../../sparql_anything/sparql-anything-0.8.1.jar --creds ../../../Desktop/sheet2skos/client_secret_sheet2skos.json --wb_name "skos_thesauri_meemoo" --uri_json ./uri_dict.json  --thes_names "events;test_transformatie;events2"
 ```
 
 ## Arguments
@@ -99,5 +102,6 @@ python ./sheet2skos.py --saJAR ../../Documents/sparql_anything/sparql-anything-0
 |`--creds`||The location of the client secret needed for authentication with mode 'google_sheet'.|True, with mode 'google_sheet'|
 |`--wb_name`||The name of the Google workbook that contains the SKOS template(s).|True, with mode 'google_sheet'|
 |`--thes_names`||The name of the thesaurus to be transformed. This name is also used to retrieve the relevant ontology URI from the JSON file. In the case of mode 'google_sheet', this can be multiple thesauri names corresponding to tabs from the sheet. In that case the multiple names must be separated by a semicolon without the use of whitespace and surrounded by quotes.|True|
+|`--pref_label`||The `skos:prefLabel` for the concept scheme that is being transformed.|True, with mode 'csv'|
 |`--input_file`||The location of the input in the case of a CSV file.|True, with mode 'csv'|
 |`--uri_json`|`./uri_dict.json`|The location of a JSON that contains the ontology URI for different thesauri names.|True|
