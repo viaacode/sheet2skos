@@ -1,3 +1,4 @@
 {
-    "events": "https://data.hetarchief.be/id/event-type"
+    "events": "https://data.hetarchief.be/id/event-type",
+    "carriers": "https://data.hetarchief.be/id/carrier-type" 
 }

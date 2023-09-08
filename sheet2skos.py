@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 import subprocess
 import tempfile
+import skosify
 
 from queries import MAPPING
 
@@ -98,6 +99,12 @@ def csv_func(args):
     output_fname = write_output(args=args, output=output, output_fname=args.thes_names)
     print(
         f"Finished transforming '{args.thes_names}'; output was written to '{output_fname}'"
+    )
+
+    voc = skosify.skosify(output_fname, default_language="nl")
+    voc.serialize(destination=output_fname, format='turtle')
+    print(
+        f"Applied skosify '{args.thes_names}'; output was written to '{output_fname}'"
     )
 
 
