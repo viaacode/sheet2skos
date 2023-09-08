@@ -6,13 +6,14 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xyz: <http://sparql.xyz/facade-x/data/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 CONSTRUCT {
     ?ont_iri a skos:ConceptScheme ;
-                  skos:prefLabel {pref_label_placeholder} ;
-                  skos:hasTopConcept ?topconcept .
+                  skos:prefLabel {pref_label_placeholder} .
+                  #skos:hasTopConcept ?topconcept .
     ?concept a skos:Concept ;
-             rdfs:subClassOf premis:Event ;
+             #rdfs:subClassOf premis:StorageMedium ;
              skos:prefLabel ?preflabel_nl ;
              skos:prefLabel ?preflabel_en ;
              skos:prefLabel ?preflabel_fr ;
@@ -30,7 +31,10 @@ CONSTRUCT {
              skos:example ?example_fr ;
              skos:example ?example ;
              skos:inScheme ?ont_iri ;
-             skos:topConceptOf ?topconcept_of .
+             #skos:topConceptOf ?topconcept_of ;
+             skos:exactmatch ?exact_match ;
+             skos:notation ?notation ;
+             rdfs:seeAlso ?see_also .
 }
 WHERE {
     SERVICE <x-sparql-anything:csv.headers=true>
@@ -39,13 +43,13 @@ WHERE {
                         fx:media-type "text/csv" ;
                         fx:csv.null-string          "" .
 
-        ?c xyz:concept_benaming ?concept_temp ;
-           xyz:voorkeursbenaming_en ?preflabel_en_temp ;
-           xyz:voorkeursbenaming_nl ?preflabel_nl_temp ;
-           xyz:voorkeursbenaming_fr ?preflabel_fr_temp ;
-           xyz:definitie_en ?definition_en_temp ;
-           xyz:definitie_nl ?definition_nl_temp ;
-           xyz:definitie_fr ?definition_fr_temp .
+        ?c xyz:concept_benaming ?concept_temp .
+        OPTIONAL { ?c  xyz:voorkeursbenaming_en ?preflabel_en_temp. }
+        OPTIONAL { ?c  xyz:voorkeursbenaming_nl ?preflabel_nl_temp. }
+        OPTIONAL { ?c  xyz:voorkeursbenaming_fr ?preflabel_fr_temp. }
+        OPTIONAL { ?c  xyz:definitie_en ?definition_en_temp. }
+        OPTIONAL { ?c  xyz:definitie_nl ?definition_nl_temp. }
+        OPTIONAL { ?c  xyz:definitie_fr ?definition_fr_temp. }
         OPTIONAL {
             ?c xyz:alternatieve_benaming_en ?altlabel_en_temp .
         }
@@ -76,7 +80,20 @@ WHERE {
         OPTIONAL {
             ?c xyz:voorbeeld ?example_temp .
         }
-
+        # notatie	collectie	heeft_exacte_match	zie_ook
+        OPTIONAL {
+            ?c xyz:notatie ?notatie_temp .
+        }
+        OPTIONAL {
+            ?c xyz:collectie ?collectie_temp .
+        }
+        OPTIONAL {
+            ?c xyz:heeft_exacte_match ?heeft_exacte_match_temp .
+        }
+        OPTIONAL {
+            ?c xyz:zie_ook ?zie_ook_temp .
+        }
+        
         BIND (IRI({ont_iri_placeholder}) AS ?ont_iri)
         BIND (IRI(CONCAT(str(?ont_iri), "/", ?concept_temp)) AS ?concept)
         
@@ -120,6 +137,15 @@ WHERE {
     OPTIONAL{
         ?example apf:strSplit    (?example_temp ";") .
     }
+    OPTIONAL{
+        ?member_notatie_temp apf:strSplit    (?notatie_temp ";") .
+    }
+    OPTIONAL{
+        ?member_heeft_exacte_match_temp apf:strSplit    (?heeft_exacte_match_temp ";") .
+    }
+    OPTIONAL{
+        ?member_zie_ook_temp apf:strSplit    (?zie_ook_temp ";") .
+    }
     
     BIND (STRLANG(?member_altlabel_en_temp, "en") AS ?altlabel_en)
     BIND (STRLANG(?member_altlabel_nl_temp, "nl") AS ?altlabel_nl)
@@ -130,5 +156,11 @@ WHERE {
     BIND (STRLANG(?member_example_en_temp, "en") AS ?example_en)
     BIND (STRLANG(?member_example_nl_temp, "nl") AS ?example_nl)
     BIND (STRLANG(?member_example_fr_temp, "fr") AS ?example_fr)
+
+    BIND (STRDT(?member_notatie_temp, xsd:string) AS ?notation)
+    BIND (IRI(?member_heeft_exacte_match_temp) AS ?exact_match)
+    BIND (IRI(?member_zie_ook_temp) AS ?see_also)
+
+    #BIND (IRI(CONCAT(str(?ont_iri), "/", ?collectie_temp)) AS ?collection)
 }
 """

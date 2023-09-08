@@ -38,12 +38,12 @@ In that case, these values must be separated by a semicolon.
 Column name | Description | SKOS term | Cardinality
 :--|:--|:--|:--
 concept_benaming|This column should contain the ID that is appended to the base URI to form the unique URI of the term in the thesaurus.|`skos:Concept`|1..1|
-voorkeursbenaming_en|This column contains the preferred label of the term in English.|`skos:prefLabel@en`|1..1|
-voorkeursbenaming_fr|This column contains the preferred label of the term in French.|`skos:prefLabel@fr`|1..1|
+voorkeursbenaming_en|This column contains the preferred label of the term in English.|`skos:prefLabel@en`|0..1|
+voorkeursbenaming_fr|This column contains the preferred label of the term in French.|`skos:prefLabel@fr`|0..1|
 voorkeursbenaming_nl|This column contains the preferred label of the term in Dutch.|`skos:prefLabel@nl`|1..1|
-definitie_en|This column contains a succinct definition of the term in English.|`skos:definition@en`|1..1|
-definitie_fr|This column contains a succinct definition of the term in French.|`skos:definition@fr`|1..1|
-definitie_nl|This column contains a succinct definition of the term in Dutch.|`skos:definition@nl`|1..1|
+definitie_en|This column contains a succinct definition of the term in English.|`skos:definition@en`|0..1|
+definitie_fr|This column contains a succinct definition of the term in French.|`skos:definition@fr`|0..1|
+definitie_nl|This column contains a succinct definition of the term in Dutch.|`skos:definition@nl`|0..1|
 alternatieve_benaming_en|This column can contain one or more alternative labels of the term in English.|`skos:altLabel@en`|0..*|
 alternatieve_benaming_fr|This column can contain one or more alternative labels of the term in French.|`skos:altLabel@fr`|0..*|
 alternatieve_benaming_nl|This column can contain one or more alternative labels of the term in Dutch.|`skos:altLabel@nl`|0..*|
@@ -54,6 +54,9 @@ voorbeeld_en|This column can contain one or more examples of the term in English
 voorbeeld_fr|This column can contain one or more examples of the term in French.|`skos:example@fr`|0..*|
 voorbeeld_nl|This column can contain one or more examples of the term in Dutch.|`skos:example@nl`|0..*|
 voorbeeld|This column can contain one or more examples of the term, without the use of langStrings. This can be useful if the example is a term that has no real translations across languages (e.g. the name of an organisation).|`skos:example`|0..*|
+notatie|This column contains the notation of the term.|`skos:prefLabel@en`|0..*|
+heeft_exacte_match|This column indicates whether the current concept has matches another concept from another concept scheme.|`skos:exactMatch`|0..*|
+zie_ook|This column indicates whether the current concept is is any way related to a web resource. |`rdfs:seeAlso`|0..*|
 
 # Usage
 
