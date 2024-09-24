@@ -1,4 +1,5 @@
 {
     "events": "https://data.hetarchief.be/id/event-type",
-    "carriers": "https://data.hetarchief.be/id/carrier-type" 
+    "carriers": "https://data.hetarchief.be/id/carrier-type", 
+    "logos": "https://data.hetarchief.be/id/logo-type"
 }

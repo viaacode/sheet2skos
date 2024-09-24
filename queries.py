@@ -34,7 +34,10 @@ CONSTRUCT {
              #skos:topConceptOf ?topconcept_of ;
              skos:exactmatch ?exact_match ;
              skos:notation ?notation ;
-             rdfs:seeAlso ?see_also .
+             rdfs:seeAlso ?see_also ;
+             skos:note ?note_nl ;
+             skos:note ?note_fr ;
+             skos:note ?note_en .
 }
 WHERE {
     SERVICE <x-sparql-anything:csv.headers=true>
@@ -93,6 +96,15 @@ WHERE {
         OPTIONAL {
             ?c xyz:zie_ook ?zie_ook_temp .
         }
+        OPTIONAL {
+            ?c xyz:notitie_nl ?note_nl_temp .
+        }
+        OPTIONAL {
+            ?c xyz:notitie_fr ?note_fr_temp .
+        }
+        OPTIONAL {
+            ?c xyz:notitie_en ?note_en_temp .
+        }
         
         BIND (IRI({ont_iri_placeholder}) AS ?ont_iri)
         BIND (IRI(CONCAT(str(?ont_iri), "/", ?concept_temp)) AS ?concept)
@@ -103,6 +115,9 @@ WHERE {
         BIND (STRLANG(?definition_en_temp, "en") AS ?definition_en)
         BIND (STRLANG(?definition_nl_temp, "nl") AS ?definition_nl)
         BIND (STRLANG(?definition_fr_temp, "fr") AS ?definition_fr)
+        BIND (STRLANG(?note_en_temp, "en") AS ?note_en)
+        BIND (STRLANG(?note_nl_temp, "nl") AS ?note_nl)
+        BIND (STRLANG(?note_fr_temp, "fr") AS ?note_fr)
         
         BIND (IF(!bound(?broader), ?concept, 1/0) AS ?topconcept)
         BIND (IF(!bound(?broader), ?ont_iri, 1/0) AS ?topconcept_of)
