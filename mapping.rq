@@ -1,4 +1,3 @@
-MAPPING = """
 PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>
 PREFIX fx: <http://sparql.xyz/facade-x/ns/>
 PREFIX premis: <http://www.loc.gov/premis/rdf/v3/>
@@ -9,11 +8,12 @@ PREFIX xyz: <http://sparql.xyz/facade-x/data/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 CONSTRUCT {
-    ?ont_iri a skos:ConceptScheme ;
-                  skos:prefLabel {pref_label_placeholder} .
-                  #skos:hasTopConcept ?topconcept .
-    ?concept a skos:Concept ;
-             #rdfs:subClassOf premis:StorageMedium ;
+    ?scheme a skos:ConceptScheme ;
+                  skos:prefLabel ?prefLabelNL,?prefLabelEN;
+                  skos:hasTopConcept ?concept .
+
+    ?concept a skos:Concept, ?class ;
+             rdfs:subClassOf ?parent ;
              skos:prefLabel ?preflabel_nl ;
              skos:prefLabel ?preflabel_en ;
              skos:prefLabel ?preflabel_fr ;
@@ -30,13 +30,19 @@ CONSTRUCT {
              skos:example ?example_nl ;
              skos:example ?example_fr ;
              skos:example ?example ;
-             skos:inScheme ?ont_iri ;
-             #skos:topConceptOf ?topconcept_of ;
+             skos:inScheme ?scheme ;
+             skos:topConceptOf ?scheme ;
              skos:exactmatch ?exact_match ;
              skos:notation ?notation ;
+             skos:changeNote ?change_note;
              rdfs:seeAlso ?see_also .
 }
 WHERE {
+    BIND(?__scheme_iri as ?scheme )
+    BIND(?__class_iri as ?class )
+    BIND(?__parent_iri as ?parent )
+    BIND(?__prefLabelNL_nl as ?prefLabelNL )
+    BIND(?__prefLabelEN_en as ?prefLabelEN )
     SERVICE <x-sparql-anything:csv.headers=true>
     {
         fx:properties   fx:location       ?_file ;
@@ -84,6 +90,7 @@ WHERE {
         OPTIONAL {
             ?c xyz:notatie ?notatie_temp .
         }
+        OPTIONAL { ?c  xyz:change_note ?definition_fr_temp. }
         OPTIONAL {
             ?c xyz:collectie ?collectie_temp .
         }
@@ -93,9 +100,11 @@ WHERE {
         OPTIONAL {
             ?c xyz:zie_ook ?zie_ook_temp .
         }
-        
-        BIND (IRI({ont_iri_placeholder}) AS ?ont_iri)
-        BIND (IRI(CONCAT(str(?ont_iri), "/", ?concept_temp)) AS ?concept)
+
+        # Calculate IRIs
+        BIND(?__base_iri as ?base )
+        BIND(BOUND(?base) as ?hasBase )
+        BIND (IF(?hasBase, iri(CONCAT(str(?base), ?concept_temp)), iri(?concept_temp)) AS ?concept)
         
         BIND (STRLANG(?preflabel_en_temp, "en") AS ?preflabel_en)
         BIND (STRLANG(?preflabel_nl_temp, "nl") AS ?preflabel_nl)
@@ -163,4 +172,3 @@ WHERE {
 
     #BIND (IRI(CONCAT(str(?ont_iri), "/", ?collectie_temp)) AS ?collection)
 }
-"""

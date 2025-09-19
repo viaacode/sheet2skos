@@ -1,4 +1,10 @@
 {
     "events": "https://data.hetarchief.be/id/event-type",
-    "carriers": "https://data.hetarchief.be/id/carrier-type" 
+    "carriers": "https://data.hetarchief.be/id/carrier-type",
+    "orgs": "https://data.hetarchief.be/id/organization-type",
+    "makers": "https://data.hetarchief.be/id/role",
+    "genres": "https://data.hetarchief.be/id/genre",
+    "gebruikersgroepen": "https://data.hetarchief.be/id/genre",
+    "inhoudsbereik": "https://data.hetarchief.be/id/content-range",
+    "metadatabereik": "https://data.hetarchief.be/id/metadata-range"
 }

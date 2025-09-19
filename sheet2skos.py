@@ -9,8 +9,7 @@ import subprocess
 import tempfile
 import skosify
 
-from queries import MAPPING
-
+MAPPING = open("mapping.rq", "r")
 
 def google_config(creds_file, wb_name):
     gc = gspread.oauth(
@@ -63,6 +62,10 @@ def transform(sa_jar, sa_mapping, filename):
             sa_mapping,
             "-v",
             f"file={filename}",
+            "-v",
+            f"scheme=",
+            
+
         ],
         capture_output=True,
         check=True,
@@ -141,12 +144,12 @@ def sheet_func(args):
 def main(args):
     if not os.path.isfile(args.saJAR):
         print(
-            "Sparql Anything JAR was not provided; preparing to download sparql-anything-0.8.1.jar to './sparql-anything-0.8.1.jar'"
+            "Sparql Anything JAR was not provided; preparing to download sparql-anything-v1.0.0.jar to './sparql-anything-v1.0.0.jar'"
         )
         r = requests.get(
-            "https://github.com/SPARQL-Anything/sparql.anything/releases/download/v0.8.1/sparql-anything-0.8.1.jar"
+            "https://github.com/SPARQL-Anything/sparql.anything/releases/download/v1.0.0/sparql-anything-v1.0.0.jar"
         )
-        with open("./sparql-anything-0.8.1.jar", "wb") as f:
+        with open("./sparql-anything-v1.0.0.jar", "wb") as f:
             total_length = int(r.headers.get("content-length"))
             for chunk in progress.bar(
                 r.iter_content(chunk_size=1024), expected_size=(total_length / 1024) + 1
@@ -154,7 +157,7 @@ def main(args):
                 if chunk:
                     f.write(chunk)
                     f.flush()
-        args.saJAR = "./sparql-anything-0.8.1.jar"
+        args.saJAR = "./sparql-anything-v1.0.0.jar"
         print("Finished downloading Sparql Anything.")
 
     if args.mode == "csv":
